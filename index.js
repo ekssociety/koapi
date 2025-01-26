@@ -1,5 +1,6 @@
 const express = require('express');
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
+const { executablePath } = require('puppeteer'); // Puppeteer'ın doğru sürümünü alacağız
 
 const app = express();
 const port = 3000;
@@ -133,9 +134,11 @@ const getVatangamePrices = async (productId, page) => {
 };
 
 // API Route'ları
-
 app.get('/prices/knight-online', async (req, res) => {
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({
+        headless: true,  // Headless modda çalışması için
+        executablePath: executablePath(),  // Puppeteer'ın doğru sürümünü kullan
+    });
     const page = await browser.newPage();
 
     let allPrices = [];
